@@ -2,29 +2,15 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>mdt.io.vn</title>
+  <title>Random Loto</title>
   <style>
     body {
       background: black;
       color: #00ff00;
       font-family: monospace;
-      padding: 20px;
       text-align: center;
       overflow: hidden;
-    }
-    a {
-      display: block;
-      margin: 20px auto;
-      padding: 14px 28px;
-      border: 1px dashed #00ff00;
-      color: #00ff00;
-      font-size: 24px;
-      text-decoration: none;
-      max-width: 300px;
-    }
-    a:hover {
-      background: #00ff00;
-      color: black;
+      padding: 20px;
     }
     canvas.matrix {
       position: fixed;
@@ -32,27 +18,68 @@
       left: 0;
       z-index: -1;
     }
-    h1 {
-      font-size: 36px;
-      margin-bottom: 40px;
+    .section {
+      margin-top: 160px;
+    }
+    input[type="number"] {
+      width: 80px;
+      font-family: monospace;
+      font-size: 23px;
+      background: black;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      padding: 8px;
+    }
+    button {
+      padding: 14px 24px;
+      font-family: monospace;
+      font-size: 32px;
+      background: black;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    a.back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      color: #00ff00;
+      font-size: 18px;
+      text-decoration: none;
+    }
+    a.back:hover {
+      text-shadow: 0 0 5px #00ff00;
     }
   </style>
 </head>
 <body>
   <canvas class="matrix"></canvas>
-  <h1>🌐 mdt.io.vn</h1>
-  <a href="apps/bingo.html">🎲 Bingo 18</a>
-  <a href="apps/random.html">🔢 Random Loto</a>
-  <a href="apps/livecount.html">📅 Live Count</a>
-
+  <a class="back" href="index.html">← Trang chủ</a>
+  <div class="section">
+    <h2 style="font-size: 36px">🔢 Random Loto</h2>
+    <div style="margin-bottom:10px;font-size: 22px">
+      <label>Nhập khoảng: </label>
+      <input id="min" type="number" value="00"> →
+      <input id="max" type="number" value="99">
+    </div>
+    <button onclick="randomNumber()">Quay số</button>
+    <div id="randomResult" style="margin-top:20px;font-size:58px;">--</div>
+  </div>
   <script>
+    function randomNumber() {
+      const min = parseInt(document.getElementById('min').value) || 0;
+      const max = parseInt(document.getElementById('max').value) || 99;
+      const result = Math.floor(Math.random() * (max - min + 1)) + min;
+      document.getElementById("randomResult").textContent = result.toString().padStart(2, '0');
+    }
+
     const canvas = document.querySelector("canvas.matrix");
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
-    const letters = "01".split("");
-    const fontSize = 24;
+    const letters = "⍟⍣⟁⧫⛥⛯⩓⩖⩘⩛⩞⩟⩠⩢⩣⩤⩥".split("");
+    const fontSize = 22;
     const columns = canvas.width / fontSize;
     const drops = Array(Math.floor(columns)).fill(1);
 
