@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>mdt.io.vn</title>
   <style>
     body {
@@ -10,6 +11,8 @@
       font-family: monospace;
       text-align: center;
       overflow: hidden;
+      margin: 0;
+      padding: 0;
     }
     canvas.matrix {
       position: fixed;
@@ -19,9 +22,9 @@
     }
     a {
       display: block;
-      font-size: 28px;
+      font-size: 5vw;
       color: #00ff00;
-      margin: 20px 0;
+      margin: 6vw 0;
       text-decoration: none;
     }
     a:hover {
@@ -29,25 +32,27 @@
       text-shadow: 0 0 5px #00ff00;
     }
     #loginBox {
-      margin: 120px auto 0;
-      max-width: 300px;
-      padding: 30px;
+      margin: 25vh auto 0;
+      max-width: 90vw;
+      padding: 5vw;
       border: 1px dashed #00ff00;
+      box-sizing: border-box;
     }
     input[type="password"] {
       background: black;
       border: 1px solid #00ff00;
       color: #00ff00;
       font-family: monospace;
-      font-size: 18px;
-      padding: 10px;
+      font-size: 4vw;
+      padding: 3vw;
       width: 100%;
-      margin-bottom: 10px;
+      box-sizing: border-box;
+      margin-bottom: 4vw;
     }
     button {
-      padding: 10px 24px;
+      padding: 3vw 5vw;
       font-family: monospace;
-      font-size: 18px;
+      font-size: 4vw;
       background: black;
       color: #00ff00;
       border: 1px solid #00ff00;
@@ -55,11 +60,11 @@
     }
     #appLinks {
       display: none;
-      margin-top: 40px;
+      margin-top: 10vh;
     }
     #mdtLogo {
-      font-size: 40px;
-      margin-top: 20px;
+      font-size: 6vw;
+      margin-top: 4vw;
       font-family: 'Segoe UI Symbol', 'monospace';
       letter-spacing: 2px;
     }
@@ -70,6 +75,13 @@
     #mdtLogo a:hover {
       color: #33ff33;
       text-shadow: 0 0 5px #00ff00;
+    }
+    @media (min-width: 768px) {
+      a { font-size: 28px; margin: 20px 0; }
+      #loginBox { max-width: 300px; padding: 30px; }
+      input[type="password"] { font-size: 18px; padding: 10px; }
+      button { font-size: 18px; padding: 10px 24px; }
+      #mdtLogo { font-size: 40px; }
     }
   </style>
 </head>
