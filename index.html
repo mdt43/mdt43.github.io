@@ -12,87 +12,40 @@
       text-align: center;
       overflow: hidden;
     }
+    a {
+      display: block;
+      margin: 20px auto;
+      padding: 14px 28px;
+      border: 1px dashed #00ff00;
+      color: #00ff00;
+      font-size: 24px;
+      text-decoration: none;
+      max-width: 300px;
+    }
+    a:hover {
+      background: #00ff00;
+      color: black;
+    }
     canvas.matrix {
       position: fixed;
       top: 0;
       left: 0;
       z-index: -1;
     }
-    .section {
-      margin-bottom: 60px;
+    h1 {
+      font-size: 36px;
+      margin-bottom: 40px;
     }
   </style>
 </head>
 <body>
   <canvas class="matrix"></canvas>
-
-  <div class="section">
-    <h2 style="font-size: 36px">🎲 Bingo 18 </h2>
-    <div id="dice" style="font-size:200px;line-height:1.2">⚀ ⚀ ⚀</div>
-    <div id="sum" style="margin-top:16px;font-size:32px;">Tổng: 3</div>
-    <button onclick="roll()" style="padding:16px 32px;margin-top:30px;font-family:monospace;font-size:32px;">Gieo</button>
-  </div>
-
-  <hr style="margin:20px 0;border:1px dashed #00ff00">
-
-  <div class="section">
-    <h2 style="font-size: 36px">🔢 Random Loto</h2>
-    <div style="margin-bottom:10px;font-size: 22px">
-      <label>Nhập khoảng: </label>
-      <input id="min" type="number" value="00" style="width:80px;font-family:monospace;font-size:23px"> → 
-      <input id="max" type="number" value="99" style="width:80px;font-family:monospace;font-size:23px">
-    </div>
-    <button onclick="randomNumber()" style="padding:14px 24px;font-family:monospace;font-size:32px">Quay số</button>
-    <div id="randomResult" style="margin-top:20px;font-size:58px;">--</div>
-  </div>
-
-  <hr style="margin:20px 0;border:1px dashed #00ff00">
-
-  <div class="section">
-    <h2 style="font-size: 36px">📅 Live Count </h2>
-    <div style="font-size: 22px;margin-bottom:10px">
-      <label>Ngày sinh (yyyy-mm-dd): </label>
-      <input type="date" id="birthdate" style="font-family:monospace;font-size:18px">
-    </div>
-    <button onclick="calculateDays()" style="padding:14px 24px;font-family:monospace;font-size:32px"> Count </button>
-    <div id="daysLived" style="margin-top:20px;font-size:40px">--</div>
-    <div id="today" style="margin-top:10px;font-size:24px;color:#66ff66">--</div>
-  </div>
+  <h1>🌐 mdt.io.vn</h1>
+  <a href="apps/bingo.html">🎲 Bingo 18</a>
+  <a href="apps/random.html">🔢 Random Loto</a>
+  <a href="apps/livecount.html">📅 Live Count</a>
 
   <script>
-    function roll() {
-      const faces = ["⚀","⚁","⚂","⚃","⚄","⚅"];
-      let result = '';
-      let total = 0;
-      for (let i = 0; i < 3; i++) {
-        let val = Math.floor(Math.random() * 6);
-        total += val + 1;
-        result += faces[val] + ' ';
-      }
-      document.getElementById("dice").textContent = result.trim();
-      document.getElementById("sum").textContent = "Tổng: " + total;
-    }
-
-    function randomNumber() {
-      const min = parseInt(document.getElementById('min').value) || 1;
-      const max = parseInt(document.getElementById('max').value) || 100;
-      const result = Math.floor(Math.random() * (max - min + 1)) + min;
-      document.getElementById("randomResult").textContent = result;
-    }
-
-    function calculateDays() {
-      const input = document.getElementById("birthdate").value;
-      if (!input) return;
-      const birth = new Date(input);
-      const today = new Date();
-      const diff = Math.floor((today - birth) / (1000 * 60 * 60 * 24));
-      document.getElementById("daysLived").textContent = `Bạn đã sống ${diff.toLocaleString()} ngày`;
-
-      const todayString = today.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-      document.getElementById("today").textContent = `Hôm nay là ${todayString}`;
-    }
-
-    // Matrix rain effect (màu mờ + to hơn)
     const canvas = document.querySelector("canvas.matrix");
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
@@ -117,7 +70,6 @@
         drops[i]++;
       }
     }
-
     setInterval(drawMatrix, 50);
   </script>
 </body>
