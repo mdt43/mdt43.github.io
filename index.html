@@ -2,13 +2,6 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Random Loto</title>
-  <style>
-    body {
-      background: black;<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
   <title>mdt.io.vn</title>
   <style>
     body {
@@ -37,8 +30,8 @@
     }
     #loginBox {
       margin: 120px auto 0;
-      max-width: 360px;
-      padding: 40px;
+      max-width: 300px;
+      padding: 30px;
       border: 1px dashed #00ff00;
     }
     input[type="password"] {
@@ -46,15 +39,15 @@
       border: 1px solid #00ff00;
       color: #00ff00;
       font-family: monospace;
-      font-size: 20px;
-      padding: 12px;
+      font-size: 18px;
+      padding: 10px;
       width: 100%;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     button {
-      padding: 12px 28px;
+      padding: 10px 24px;
       font-family: monospace;
-      font-size: 20px;
+      font-size: 18px;
       background: black;
       color: #00ff00;
       border: 1px solid #00ff00;
@@ -62,13 +55,13 @@
     }
     #appLinks {
       display: none;
-      margin-top: 50px;
+      margin-top: 40px;
     }
     #mdtLogo {
-      font-size: 48px;
-      margin-top: 40px;
+      font-size: 40px;
+      margin-top: 30px;
       font-family: 'Segoe UI Symbol', 'monospace';
-      letter-spacing: 3px;
+      letter-spacing: 2px;
     }
   </style>
 </head>
@@ -123,102 +116,6 @@
         document.getElementById("error").textContent = "Sai mật khẩu!";
       }
     }
-  </script>
-</body>
-</html>
-
-      color: #00ff00;
-      font-family: monospace;
-      text-align: center;
-      overflow: hidden;
-      padding: 20px;
-    }
-    canvas.matrix {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-    .section {
-      margin-top: 160px;
-    }
-    input[type="number"] {
-      width: 80px;
-      font-family: monospace;
-      font-size: 23px;
-      background: black;
-      color: #00ff00;
-      border: 1px solid #00ff00;
-      padding: 8px;
-    }
-    button {
-      padding: 14px 24px;
-      font-family: monospace;
-      font-size: 32px;
-      background: black;
-      color: #00ff00;
-      border: 1px solid #00ff00;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    a.back {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      color: #00ff00;
-      font-size: 18px;
-      text-decoration: none;
-    }
-    a.back:hover {
-      text-shadow: 0 0 5px #00ff00;
-    }
-  </style>
-</head>
-<body>
-  <canvas class="matrix"></canvas>
-  <a class="back" href="index.html">← Trang chủ</a>
-  <div class="section">
-    <h2 style="font-size: 36px">🔢 Random Loto</h2>
-    <div style="margin-bottom:10px;font-size: 22px">
-      <label>Nhập khoảng: </label>
-      <input id="min" type="number" value="00"> →
-      <input id="max" type="number" value="99">
-    </div>
-    <button onclick="randomNumber()">Quay số</button>
-    <div id="randomResult" style="margin-top:20px;font-size:58px;">--</div>
-  </div>
-  <script>
-    function randomNumber() {
-      const min = parseInt(document.getElementById('min').value) || 0;
-      const max = parseInt(document.getElementById('max').value) || 99;
-      const result = Math.floor(Math.random() * (max - min + 1)) + min;
-      document.getElementById("randomResult").textContent = result.toString().padStart(2, '0');
-    }
-
-    const canvas = document.querySelector("canvas.matrix");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const letters = "⍟⍣⟁⧫⛥⛯⩓⩖⩘⩛⩞⩟⩠⩢⩣⩤⩥".split("");
-    const fontSize = 22;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(0,255,0,0.2)";
-      ctx.font = fontSize + "px monospace";
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-    setInterval(drawMatrix, 50);
   </script>
 </body>
 </html>
