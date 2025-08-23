@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MDT</title>
+  <title>mdt.io.vn</title>
   <style>
     body {
       background: black;
@@ -67,6 +67,7 @@
       margin-top: 4vw;
       font-family: 'Segoe UI Symbol', 'monospace';
       letter-spacing: 2px;
+      animation: glow 2s infinite alternate;
     }
     #mdtLogo a {
       text-decoration: none;
@@ -75,6 +76,10 @@
     #mdtLogo a:hover {
       color: #33ff33;
       text-shadow: 0 0 5px #00ff00;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #00ff00; }
+      to { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00; }
     }
     @media (min-width: 768px) {
       a { font-size: 28px; margin: 20px 0; }
