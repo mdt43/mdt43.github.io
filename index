@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>~/terminal — mdt.io.vn</title>
+  <meta name="description" content="Trang web phong cách dòng lệnh (terminal) — mdt.io.vn" />
+  <meta property="og:title" content="Terminal-style site" />
+  <meta property="og:description" content="Trang web phong cách dòng lệnh, thuần HTML/CSS/JS, dễ deploy lên GitHub Pages." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0b0f12" />
+  <style>
+    /* ... giữ nguyên CSS như cũ ... */
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="terminal" role="application" aria-label="Mô phỏng dòng lệnh">
+      <div class="term-title" aria-hidden="true">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <div class="title-text">~/terminal — command-line website</div>
+      </div>
+      <div id="screen" class="screen" tabindex="0" aria-live="polite" aria-atomic="false"></div>
+      <div class="inputline">
+        <label for="cmd" class="prompt" id="prompt">guest@mdt:~$</label>
+        <input id="cmd" name="cmd" type="text" autocomplete="off" spellcheck="false" aria-label="Nhập lệnh, gõ 'help' để xem danh sách" />
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const CONFIG = {
+    site: {
+      name: 'mdt',
+      domain: 'mdt.io.vn',
+      title: '~/terminal — mdt.io.vn',
+      promptUser: 'guest',
+      promptHost: 'mdt',
+      theme: localStorage.getItem('theme') || 'dark'
+    },
+    contact: {
+      email: 'you@mdt.io.vn',
+      phone: '',
+      location: 'Viet Nam'
+    },
+    social: {
+      github: 'https://github.com/yourname',
+      x: 'https://x.com/yourname',
+      facebook: '',
+      linkedin: ''
+    },
+    projects: [
+      { name: 'project-alpha', desc: 'MVP landing page', url: 'https://mdt.io.vn/alpha' },
+      { name: 'project-beta', desc: 'Tool CLI nhỏ', url: 'https://mdt.io.vn/beta' }
+    ],
+    files: {
+      'README.md': `# Terminal Website\nTrang web mdt.io.vn. Tùy chỉnh file CONFIG để đổi tên, link, nội dung.`,
+      'CREDITS.txt': `Built with ♥. No framework.`,
+    }
+  }
+
+  // ... giữ nguyên toàn bộ JS cũ (commands, run, boot...) ...
+})()
+</script>
+</body>
+</html>
