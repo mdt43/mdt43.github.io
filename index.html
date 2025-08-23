@@ -59,15 +59,23 @@
     }
     #mdtLogo {
       font-size: 40px;
-      margin-top: 30px;
+      margin-top: 20px;
       font-family: 'Segoe UI Symbol', 'monospace';
       letter-spacing: 2px;
+    }
+    #mdtLogo a {
+      text-decoration: none;
+      color: #00ff00;
+    }
+    #mdtLogo a:hover {
+      color: #33ff33;
+      text-shadow: 0 0 5px #00ff00;
     }
   </style>
 </head>
 <body>
   <canvas class="matrix"></canvas>
-  <div id="mdtLogo">𐌼𐌃𐍄 TOOLS</div>
+  <div id="mdtLogo"><a href="index.html">𐌼𐌃𐍄 TOOLS</a></div>
 
   <div id="loginBox">
     <input type="password" id="pw" placeholder="Password">
@@ -76,7 +84,7 @@
   </div>
 
   <div id="appLinks">
-    <a href="bingo18.html">🎲 Bingo 18 (Gieo xúc xắc)</a>
+    <a href="bingo18.html">🎲 Bingo 18</a>
     <a href="loto.html">🔢 Random Loto</a>
     <a href="livecount.html">📅 Live Count</a>
   </div>
