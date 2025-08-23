@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+  <meta charset="UTF-8">
+  <title>Lucky</title>
+</head>
+<body style="background:black;color:#00ff00;font-family:monospace;padding:20px;text-align:center">
+  <h2>LUCKY</h2>
+  <div id="dice" style="font-size:80px;line-height:1.2">⚀ ⚀ ⚀</div>
+  <button onclick="roll()" style="padding:10px;margin-top:20px;font-family:monospace">Roll</button>
+  <script>
+    function roll() {
+      const faces = ["⚀","⚁","⚂","⚃","⚄","⚅"];
+      let result = '';
+      for (let i = 0; i < 3; i++) {
+        result += faces[Math.floor(Math.random() * 6)] + ' ';
+      }
+      document.getElementById("dice").textContent = result.trim();
+    }
+  </script>
+</body></html>
