@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>~/terminal — mdt.io.vn</title>
+  <meta name="description" content="Trang web phong cách dòng lệnh (terminal) — mdt.io.vn" />
+  <meta property="og:title" content="Terminal-style site" />
+  <meta property="og:description" content="Trang web phong cách dòng lệnh, thuần HTML/CSS/JS, dễ deploy lên GitHub Pages." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0b0f12" />
+  <style>
+    :root{
+      --bg: #0b0f12;      /* dark */
+      --fg: #e6edf3;
+      --dim:#9fb1c1;
+      --accent:#7ee787;
+      --error:#ff6b6b;
+      --prompt:#7ee787;
+      --shadow: rgba(0,0,0,.35);
+      --link:#91c9ff;
+    }
+    .theme-light{ --bg:#f5f7fb; --fg:#0b0f12; --dim:#5b6b79; --accent:#0ea5e9; --prompt:#16a34a; --shadow:rgba(0,0,0,.12); --link:#0ea5e9 }
+    .theme-retro{ --bg:#0b1d13; --fg:#b8ffcc; --dim:#65a67c; --accent:#00ff66; --prompt:#00ff66; --shadow:rgba(0,0,0,.4); --link:#62ffd0 }
+
+    html,body{height:100%}
+    body{
+      margin:0;
+      font: 16px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      background: var(--bg);
+      color: var(--fg);
+      display:flex; align-items:center; justify-content:center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+    .wrap{width:min(980px,100%);}
+    .terminal{
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08)), var(--bg);
+      border-radius: 16px; box-shadow: 0 20px 50px var(--shadow);
+      border: 1px solid rgba(255,255,255,.07);
+      overflow:hidden;
+    }
+    .term-title{display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.02); position:sticky; top:0; backdrop-filter: blur(6px);
+    }
+    .dot{width:12px; height:12px; border-radius:50%}
+    .dot.red{background:#ff5f56}
+    .dot.yellow{background:#ffbd2e}
+    .dot.green{background:#27c93f}
+    .title-text{color:var(--dim); font-size:13px}
+
+    .screen{ padding: 18px; min-height: 46vh; max-height: 72vh; overflow:auto; }
+    .line{ white-space: pre-wrap; word-break: break-word; }
+    .mute{ color: var(--dim) }
+    .accent{ color: var(--accent) }
+    a{ color: var(--link); text-decoration: none; border-bottom: 1px dotted currentColor }
+    a:focus, a:hover{ text-decoration: underline }
+
+    .inputline{ display:flex; gap:8px; align-items:center; padding: 14px 18px; border-top:1px solid rgba(255,255,255,.06); background: rgba(255,255,255,.02); position:sticky; bottom:0; }
+    .prompt{ color: var(--prompt) }
+    #cmd{ flex:1; background:transparent; border:none; color:var(--fg); font: inherit; outline:none; caret-color: var(--accent) }
+
+    .banner{ color: var(--accent) }
+    .error{ color: var(--error) }
+
+    .screen::after{ content:""; position:sticky; top:0; display:block; height:1px; width:100%; background:linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent) }
+
+    @media (prefers-reduced-motion: no-preference){
+      .cursor{ display:inline-block; width:10px; background:var(--accent); animation: blink 1s step-end infinite }
+      @keyframes blink{ 50%{ opacity:0 } }
+    }
+    @media (max-width: 600px){ body{ padding:12px } .title-text{ display:none } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="terminal" role="application" aria-label="Mô phỏng dòng lệnh">
+      <div class="term-title" aria-hidden="true">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <div class="title-text">~/terminal — command-line website</div>
+      </div>
+      <div id="screen" class="screen" tabindex="0" aria-live="polite" aria-atomic="false"></div>
+      <div class="inputline">
+        <label for="cmd" class="prompt" id="prompt">guest@mdt:~$</label>
+        <input id="cmd" name="cmd" type="text" autocomplete="off" spellcheck="false" aria-label="Nhập lệnh, gõ 'help' để xem danh sách" />
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  // ======= CONFIG =======
+  const CONFIG = {
+    site: {
+      name: 'mdt',
+      domain: 'mdt.io.vn',
+      title: '~/terminal — mdt.io.vn',
+      promptUser: 'guest',
+      promptHost: 'mdt',
+      theme: localStorage.getItem('theme') || 'dark',
+    },
+    contact: {
+      email: 'you@mdt.io.vn',
+      phone: '',
+      location: 'Viet Nam'
+    },
+    social: {
+      github: 'https://github.com/yourname',
+      x: 'https://x.com/yourname',
+      facebook: '',
+      linkedin: ''
+    },
+    projects: [
+      { name: 'project-alpha', desc: 'MVP landing page', url: 'https://mdt.io.vn/alpha' },
+      { name: 'project-beta', desc: 'Tool CLI nhỏ', url: 'https://mdt.io.vn/beta' }
+    ],
+    files: {
+      'README.md': `# Terminal Website\nTrang web mdt.io.vn. Tùy chỉnh file CONFIG để đổi tên, link, nội dung.`,
+      'CREDITS.txt': `Built with ♥. No framework.`,
+    }
+  }
+
+  // ======= DOM & State =======
+  const screen = document.getElementById('screen')
+  const input = document.getElementById('cmd')
+  const prompt = document.getElementById('prompt')
+  let history = []
+  let hIndex = 0
+
+  // ======= Utilities =======
+  const now = () => new Date()
+  const pad = (n) => String(n).padStart(2,'0')
+  const escapeHtml = (s='') => s.replace(/[&<>\"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]))
+  const link = (href, text=href) => `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(text)}</a>`
+  const setTheme = (name) => {
+    document.documentElement.classList.remove('theme-light','theme-retro')
+    if(name==='light') document.documentElement.classList.add('theme-light')
+    if(name==='retro') document.documentElement.classList.add('theme-retro')
+    localStorage.setItem('theme', name)
+  }
+  const protocolOK = (u) => /^(https?:)\/\//i.test(u)
+  const scrollToBottom = () => screen.scrollTop = screen.scrollHeight
+
+  const print = (html, cls='line') => {
+    const div = document.createElement('div')
+    div.className = cls
+    div.innerHTML = html
+    screen.appendChild(div)
+    scrollToBottom()
+  }
+  const printLines = (lines, cls='line') => lines.forEach(l => print(l, cls))
+
+  const promptStr = () => `${CONFIG.site.promptUser}@${CONFIG.site.promptHost}:~$`
+  const setPrompt = () => prompt.textContent = promptStr()
+
+  // ======= Commands =======
+  const commands = {}
+
+  commands.help = () => {
+    const list = [
+      ['help', 'Danh sách lệnh'],
+      ['about', 'Giới thiệu ngắn'],
+      ['projects', 'Danh sách dự án'],
+      ['contact', 'Email / mạng xã hội'],
+      ['social', 'Link social'],
+      ['ls', 'Liệt kê file ảo'],
+      ['cat <file>', 'Xem nội dung file'],
+      ['open <url|key>', 'Mở link (key: github, x, linkedin, facebook, tên dự án)'],
+      ['theme [dark|light|retro]', 'Đổi giao diện'],
+      ['banner', 'Hiện ASCII banner'],
+      ['echo <text>', 'In lại nội dung'],
+      ['date / time', 'Ngày giờ hiện tại'],
+      ['whoami', 'Tên người dùng'],
+      ['history', 'Xem lịch sử lệnh'],
+      ['clear', 'Xoá màn hình']
+    ]
+    const r = [ '<span class="accent">Lệnh có sẵn</span>\n' ]
+    const padTo = Math.max(...list.map(([k]) => k.length)) + 2
+    list.forEach(([k,v])=> r.push(`${k.padEnd(padTo,' ')} ${v}`))
+    return r.join('\n')
+  }
+
+  commands.about = () => (
+`Trang web phong cách dòng lệnh.\n`+
+`Tên miền: ${CONFIG.site.domain}\n`+
+`Deploy free: GitHub Pages / Cloudflare Pages / Netlify.`)
+
+  commands.projects = () => {
+    if(!CONFIG.projects.length) return 'Chưa có dự án. Thêm trong CONFIG.projects'
+    const rows = CONFIG.projects.map(p => `• ${p.name} — ${p.desc} — ${p.url}`)
+    return ['<span class="accent">Dự án</span>', ...rows].join('\n')
+  }
+
+  commands.contact = () => {
+    const s = CONFIG.social
+    const items = [
+      `Email: ${CONFIG.contact.email ? link(` + "`mailto:${CONFIG.contact.email}`" + `, CONFIG.contact.email) : '—'}`,
+      s.github ? `GitHub: ${link(s.github)}` : null,
+      s.x ? `X (Twitter): ${link(s.x)}` : null,
+      s.linkedin ? `LinkedIn: ${link(s.linkedin)}` : null,
+      s.facebook ? `Facebook: ${link(s.facebook)}` : null,
+    ].filter(Boolean)
+    return items.join('\n')
+  }
+
+  commands.social = () => commands.contact()
+
+  commands.ls = () => Object.keys(CONFIG.files).join('  ')
+
+  commands.cat = (arg) => {
+    if(!arg) return 'Dùng: cat <file>'
+    const file = CONFIG.files[arg]
+    return file ? escapeHtml(file) : `Không tìm thấy file: ${arg}`
+  }
+
+  const openKeyMap = () => {
+    const map = {}
+    const s = CONFIG.social
+    if(s.github) map.github = s.github
+    if(s.x) map.x = s.x
+    if(s.linkedin) map.linkedin = s.linkedin
+    if(s.facebook) map.facebook = s.facebook
+    CONFIG.projects.forEach(p => map[p.name] = p.url)
+    return map
+  }
+
+  commands.open = (arg) => {
+    if(!arg) return 'Dùng: open <url|key>'
+    const map = openKeyMap()
+    const url = map[arg] || arg
+    if(!protocolOK(url)) return 'Chỉ cho phép http/https. Ví dụ: https://example.com'
+    window.open(url, '_blank', 'noopener')
+    return `Đã mở: ${url}`
+  }
+
+  commands.theme = (arg) => {
+    const name = (arg||'dark').toLowerCase()
+    if(!['dark','light','retro'].includes(name)) return "Chọn: dark | light | retro"
+    setTheme(name)
+    return `Theme: ${name}`
+  }
+
+  commands.banner = () => (
+`<span class="banner">`+
+`   ____                    _            _ _ \n`+
+`  |  _ \\ ___  __ _ _ __ | | \n`+
+`  | |_) / _ \\/ _\
