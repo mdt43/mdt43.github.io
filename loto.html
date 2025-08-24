@@ -1,16 +1,31 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🔢 Random Loto</title>
+  <title>Random Loto</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <canvas class="matrix"></canvas>
   <div id="mdtLogo"><a href="index.html">𐌼𐌃𐍄 TOOLS</a></div>
-  <h1>🔢 Random Loto</h1>
-  <p>Ứng dụng random 6 số Loto</p>
+  <div class="section">
+    <h2>🔢 Random Loto</h2>
+    <label>Nhập khoảng: </label>
+    <input id="min" type="number" value="00"> →
+    <input id="max" type="number" value="99">
+    <button onclick="randomNumber()">Quay số</button>
+    <div id="randomResult">--</div>
+  </div>
   <script src="matrix.js"></script>
+  <script>
+    function randomNumber() {
+      const min = parseInt(document.getElementById('min').value) || 1;
+      const max = parseInt(document.getElementById('max').value) || 100;
+      const result = Math.floor(Math.random() * (max - min + 1)) + min;
+      document.getElementById("randomResult").textContent = result;
+    }
+  </script>
 </body>
 </html>

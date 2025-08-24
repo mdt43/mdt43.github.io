@@ -1,16 +1,37 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📅 Live Count</title>
+  <title>Live Count</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <canvas class="matrix"></canvas>
   <div id="mdtLogo"><a href="index.html">𐌼𐌃𐍄 TOOLS</a></div>
-  <h1>📅 Live Count</h1>
-  <p>Ứng dụng đếm ngày đã sống</p>
+  <div class="section">
+    <h2>📅 Live Count</h2>
+    <label>Ngày sinh (yyyy-mm-dd): </label>
+    <input type="date" id="birthdate">
+    <button onclick="calculateDays()">Count</button>
+    <div id="daysLived">--</div>
+    <div id="today">--</div>
+  </div>
   <script src="matrix.js"></script>
+  <script>
+    function calculateDays() {
+      const input = document.getElementById("birthdate").value;
+      if (!input) return;
+      const birth = new Date(input);
+      const today = new Date();
+      const diff = Math.floor((today - birth) / (1000 * 60 * 60 * 24));
+      document.getElementById("daysLived").textContent = `Bạn đã sống ${diff.toLocaleString()} ngày`;
+      const todayString = today.toLocaleDateString('vi-VN', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      document.getElementById("today").textContent = `Hôm nay là ${todayString}`;
+    }
+  </script>
 </body>
 </html>
