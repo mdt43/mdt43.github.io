@@ -22,14 +22,17 @@
   <script src="matrix.js"></script>
   <script>
     function checkPassword() {
-      const input = document.getElementById("pw").value;
-      if (input === "mdt") {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("appLinks").style.display = "block";
-      } else {
-        document.getElementById("error").textContent = "Sai mật khẩu!";
-      }
-    }
+  const input = document.getElementById("pw").value;
+  if (input === "mdt") {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("appLinks").style.display = "block";
+  } else if (input === "43") {
+    window.location.href = "chat.html";
+  } else {
+    document.getElementById("error").textContent = "Sai mật khẩu!";
+  }
+}
+
   </script>
 </body>
 </html>
