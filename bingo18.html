@@ -1,22 +1,70 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bingo18</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Bingo 18</title>
+  <style>
+    body {
+      background: black;
+      color: #00ff00;
+      font-family: monospace;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    #mdtHome {
+      position: fixed;
+      top: 10px;
+      left: 20px;
+      font-size: 24px;
+    }
+    #mdtHome a {
+      color: #00ff00;
+      text-decoration: none;
+    }
+    #mdtHome a:hover {
+      color: #33ff33;
+    }
+    h1 {
+      font-size: 48px;
+      margin-top: 80px;
+    }
+    #dice {
+      font-size: 160px;
+      margin: 40px 0 20px;
+    }
+    #sum {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 12px 30px;
+      font-size: 24px;
+      background: black;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      cursor: pointer;
+      font-family: monospace;
+    }
+    button:hover {
+      color: #33ff33;
+    }
+    @media (max-width: 768px) {
+      h1 { font-size: 36px; }
+      #dice { font-size: 96px; }
+      #sum { font-size: 28px; }
+      button { font-size: 20px; padding: 10px 20px; }
+    }
+  </style>
 </head>
 <body>
-  <canvas class="matrix"></canvas>
-  <div id="mdtLogo"><a href="index.html">𐌼𐌃𐍄 TOOLS</a></div>
-  <div class="section">
-    <h2>🎲 Bingo18</h2>
-    <div id="dice">⚀ ⚀ ⚀</div>
-    <div id="sum">Tổng: 3</div>
-    <button onclick="roll()">Gieo</button>
-  </div>
-  <script src="matrix.js"></script>
+  <div id="mdtHome"><a href="index.html">𐌼𐌃𐍄</a></div>
+  <h1>🎲 Bingo18</h1>
+  <div id="dice">⚀ ⚀ ⚀</div>
+  <div id="sum">Tổng: 3</div>
+  <button onclick="roll()">Gieo</button>
+
   <script>
     function roll() {
       const faces = ["⚀","⚁","⚂","⚃","⚄","⚅"];
