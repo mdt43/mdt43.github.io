@@ -78,8 +78,8 @@
       text-shadow: 0 0 5px #00ff00;
     }
     @keyframes glow {
-      from { text-shadow: 0 0 5px #00ff00; }
-      to { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00; }
+      0% { text-shadow: 0 0 5px #00ff00; }
+      100% { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00; }
     }
     @media (min-width: 768px) {
       a { font-size: 28px; margin: 20px 0; }
@@ -101,7 +101,7 @@
   </div>
 
   <div id="appLinks">
-    <a href="bingo18.html">🎲 Bingo 18</a>
+    <a href="bingo18.html">🎲 Bingo18</a>
     <a href="loto.html">🔢 Random Loto</a>
     <a href="livecount.html">📅 Live Count</a>
   </div>
@@ -111,20 +111,20 @@
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    const letters = "卐ᚠᚡᚢᚣᚤᚥᚦᚧᚨᚩᚪᚫᚬᚭᚮᚯ#%&@¥€£§★☯☢☣⚛☄✡☘☠⚔♦♣♠♡♥♤♧".split("");
-    const fontSize = 14;
+    const letters = "卐ᚠᚡᚢᚣᚤᚥᚦᚧᚨᚩᚪᚫᚬᚭᚮᚯ#%&@¥€£§★☯☢☣⚛☄✡☘☠⚔♦♣♠♡♥♤♧☥♲☭☮☯⚒⚙".split("");
+    const fontSize = 12;
     const columns = canvas.width / fontSize;
     const drops = Array(Math.floor(columns)).fill(1);
 
     function drawMatrix() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(0,255,0,0.2)";
+      ctx.fillStyle = "rgba(0,255,0,0.3)";
       ctx.font = fontSize + "px monospace";
       for (let i = 0; i < drops.length; i++) {
         const text = letters[Math.floor(Math.random() * letters.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) {
+        if (drops[i] * fontSize > canvas.height || Math.random() > 0.96) {
           drops[i] = 0;
         }
         drops[i]++;
