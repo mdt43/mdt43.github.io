@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mdt.io.vn</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas class="matrix"></canvas>
+  <div id="mdtLogo"><a href="index.html">𐌼𐌃𐍄 TOOLS</a></div>
+  <div id="loginBox">
+    <input type="password" id="pw" placeholder="Password">
+    <button onclick="checkPassword()">OK</button>
+    <p id="error" style="color:red;"></p>
+  </div>
+  <div id="appLinks">
+    <a href="bingo18.html">🎲 Bingo18</a>
+    <a href="loto.html">🔢 Random Loto</a>
+    <a href="livecount.html">📅 Live Count</a>
+  </div>
+  <script src="matrix.js"></script>
+  <script>
+    function checkPassword() {
+      const input = document.getElementById("pw").value;
+      if (input === "mdt") {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("appLinks").style.display = "block";
+      } else {
+        document.getElementById("error").textContent = "Sai mật khẩu!";
+      }
+    }
+  </script>
+</body>
+</html>
