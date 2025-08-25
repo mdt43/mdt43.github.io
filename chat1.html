@@ -1,1 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SMSPriv Chat</title>
+  <style>
+    body {
+      background-color: black;
+      color: #0f0;
+      font-family: monospace;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    #header {
+      font-size: 24px;
+      text-align: center;
+      padding: 10px;
+      background-color: #000;
+      border-bottom: 1px solid #0f0;
+    }
+    #chatbox {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    .message {
+      margin: 5px;
+      padding: 8px;
+      border-radius: 5px;
+      max-width: 80%;
+    }
+    .you {
+      background-color: #003300;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .them {
+      background-color: #001a00;
+      align-self: flex-start;
+      text-align: left;
+    }
+    #inputBox {
+      display: flex;
+      padding: 10px;
+      background: #000;
+      border-top: 1px solid #0f0;
+    }
+    #messageInput {
+      flex: 1;
+      padding: 10px;
+      background-color: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+    }
+    #sendButton {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background-color: black;
+      color: #0f0;
+      border: 1px solid #0f0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">SMSPriv Chat</div>
+  <div id="chatbox"></div>
+  <div id="inputBox">
+    <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." />
+    <button id="sendButton">Gửi</button>
+  </div>
+  <script>
+    const chatbox = document.getElementById("chatbox");
+    const messageInput = document.getElementById("messageInput");
+    const sendButton = document.getElementById("sendButton");
 
+    const SCRIPT_URL = "YOUR_SCRIPT_URL_HERE";
+
+    async function loadMessages() {
+      try {
+        const res = await fetch(SCRIPT_URL + '?action=get');
+        const data = await res.json();
+        chatbox.innerHTML = '';
+        data.reverse().forEach(msg => {
+          const div = document.createElement("div");
+          div.className = "message " + (msg.who === "you" ? "you" : "them");
+          div.textContent = msg.text;
+          chatbox.appendChild(div);
+        });
+      } catch (err) {
+        console.error("Lỗi tải tin nhắn", err);
+      }
+    }
+
+    async function sendMessage() {
+      const text = messageInput.value.trim();
+      if (!text) return;
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ who: "you", text })
+      });
+      messageInput.value = "";
+      loadMessages();
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+    messageInput.addEventListener("keypress", e => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    setInterval(loadMessages, 3000);
+    loadMessages();
+  </script>
+</body>
+</html>
