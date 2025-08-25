@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SMSPriv Chat</title>
   <style>
     body {
@@ -10,132 +10,102 @@
       color: #0f0;
       font-family: monospace;
       margin: 0;
-      padding: 0;
       display: flex;
       flex-direction: column;
       height: 100vh;
     }
-    #mdtLogo {
-      font-size: 5vw;
+    header {
       text-align: center;
       padding: 10px;
-      font-family: 'Segoe UI Symbol', monospace;
-      animation: glow 2s infinite alternate;
-      position: sticky;
-      top: 0;
-      background-color: black;
-      z-index: 10;
-    }
-    #mdtLogo a {
-      text-decoration: none;
-      color: #00ff00;
-    }
-    @keyframes glow {
-      0% { text-shadow: 0 0 5px #00ff00; }
-      100% { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00; }
+      font-size: 24px;
+      font-weight: bold;
+      border-bottom: 1px solid #0f0;
     }
     #chatbox {
       flex: 1;
       overflow-y: auto;
-      display: flex;
-      flex-direction: column-reverse;
       padding: 10px;
-      border-top: 1px solid #0f0;
-      border-bottom: 1px solid #0f0;
-    }
-    .message {
-      margin: 10px;
-      max-width: 80%;
-      padding: 10px;
-      border-radius: 8px;
-      clear: both;
-    }
-    .user {
-      background-color: #003300;
-      color: #ffffff;
-      align-self: flex-end;
-      text-align: right;
-    }
-    .bot {
-      background-color: #001a00;
-      align-self: flex-start;
-      text-align: left;
-    }
-    #inputBox {
       display: flex;
       flex-direction: column;
+    }
+    .message {
+      margin: 5px 0;
+      padding: 8px;
+      border-radius: 6px;
+      max-width: 80%;
+    }
+    .me {
+      align-self: flex-end;
+      background: #003300;
+      color: white;
+    }
+    .other {
+      align-self: flex-start;
+      background: #001a00;
+    }
+    footer {
+      display: flex;
       padding: 10px;
-      background: #000;
-      border-top: 1px dashed #00ff00;
-      position: sticky;
-      bottom: 0;
-      z-index: 10;
+      border-top: 1px solid #0f0;
     }
-    #nickInput, #userInput {
-      font-size: 16px;
-      padding: 10px;
+    input, button {
       font-family: monospace;
-      background: black;
-      border: 1px solid #0f0;
-      color: #0f0;
-      margin-bottom: 5px;
-    }
-    #sendBtn {
-      padding: 10px 20px;
       font-size: 16px;
-      font-family: monospace;
-      background: black;
-      color: #00ff00;
-      border: 1px solid #00ff00;
-      cursor: pointer;
     }
+    #user { width: 80px; margin-right: 10px; }
+    #text { flex: 1; margin-right: 10px; }
   </style>
 </head>
 <body>
-  <div id="mdtLogo"><a href="index.html">𐌼𐌃𐍄</a></div>
+  <header>SMSPriv Chat</header>
   <div id="chatbox"></div>
-  <div id="inputBox">
-    <input type="text" id="nickInput" placeholder="Nhập nickname..." />
-    <input type="text" id="userInput" placeholder="Nhập nội dung..." />
-    <button id="sendBtn">Gửi</button>
-  </div>
+  <footer>
+    <input type="text" id="user" placeholder="Tên">
+    <input type="text" id="text" placeholder="Nội dung...">
+    <button onclick="sendMessage()">Gửi</button>
+  </footer>
 
   <script>
     const chatbox = document.getElementById('chatbox');
-    const userInput = document.getElementById('userInput');
-    const nickInput = document.getElementById('nickInput');
-    const sendBtn = document.getElementById('sendBtn');
+    const userEl = document.getElementById('user');
+    const textEl = document.getElementById('text');
+    const ENDPOINT = "YOUR_SCRIPT_ID";
 
-    async function sendMessage() {
-      const message = userInput.value.trim();
-      const nickname = nickInput.value.trim() || "Ẩn danh";
-      if (!message) return;
+    function appendMessage(msg, isMe) {
+      const div = document.createElement("div");
+      div.className = "message " + (isMe ? "me" : "other");
+      div.textContent = `${msg.user}: ${msg.text}`;
+      chatbox.appendChild(div);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
 
-      appendMessage(nickname, message, 'user');
-      userInput.value = '';
-
-      try {
-        const res = await fetch("https://script.google.com/macros/s/YOUR_SCRIPT_URL_HERE/exec", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nick: nickname, text: message })
+    function loadMessages() {
+      fetch(`${ENDPOINT}?action=read`)
+        .then(res => res.json())
+        .then(data => {
+          chatbox.innerHTML = '';
+          const currentUser = userEl.value.trim();
+          data.messages.forEach(msg => {
+            appendMessage(msg, msg.user === currentUser);
+          });
         });
-      } catch (err) {
-        appendMessage('Hệ thống', 'Không gửi được.', 'bot');
-      }
     }
 
-    function appendMessage(sender, text, type) {
-      const div = document.createElement('div');
-      div.className = `message ${type}`;
-      div.innerHTML = `<strong>${sender}:</strong><br>${text}`;
-      chatbox.insertBefore(div, chatbox.firstChild);
+    function sendMessage() {
+      const user = userEl.value.trim();
+      const text = textEl.value.trim();
+      if (!user || !text) return;
+
+      const params = new URLSearchParams({ user, text });
+      fetch(ENDPOINT, { method: "POST", body: params })
+        .then(() => {
+          textEl.value = '';
+          loadMessages();
+        });
     }
 
-    sendBtn.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') sendMessage();
-    });
+    setInterval(loadMessages, 3000);
+    window.onload = loadMessages;
   </script>
 </body>
 </html>
