@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MDT Shatter Effect</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: monospace;
+    }
+    h1 {
+      position: relative;
+      font-size: 5rem;
+      z-index: 1;
+      cursor: pointer;
+      user-select: none;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="shatter"></canvas>
+  <h1 id="mdt">mdt.io.vn</h1>
+  <script>
+    const canvas = document.getElementById('shatter');
+    const ctx = canvas.getContext('2d');
+    let W = canvas.width = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+
+    const pieces = [];
+    let restoring = false;
+
+    function createFragments(textCanvas, x, y) {
+      const imgData = textCanvas.getContext('2d').getImageData(0, 0, textCanvas.width, textCanvas.height);
+      const shards = 20;
+      const pw = textCanvas.width / shards;
+      const ph = textCanvas.height / shards;
+      for (let i = 0; i < shards; i++) {
+        for (let j = 0; j < shards; j++) {
+          const sx = i * pw;
+          const sy = j * ph;
+          const data = ctx.createImageData(pw, ph);
+          const idx = (Math.floor(sy) * textCanvas.width + Math.floor(sx)) * 4;
+          for (let k = 0; k < data.data.length; k++) {
+            data.data[k] = imgData.data[idx + k] || 0;
+          }
+          pieces.push({
+            x: x + sx,
+            y: y + sy,
+            ox: x + sx,
+            oy: y + sy,
+            vx: (Math.random() - 0.5) * 20,
+            vy: (Math.random() - 0.5) * 20,
+            img: data
+          });
+        }
+      }
+    }
+
+    function animate(time) {
+      ctx.clearRect(0, 0, W, H);
+      const cx = W / 2;
+      const cy = H / 2;
+
+      pieces.forEach(p => {
+        if (restoring) {
+          const dx = cx - p.x;
+          const dy = cy - p.y;
+          p.vx += dx * 0.01;
+          p.vy += dy * 0.01;
+        } else {
+          p.vy += 0.1; // gravity
+        }
+        p.x += p.vx;
+        p.y += p.vy;
+        ctx.putImageData(p.img, p.x, p.y);
+      });
+
+      if (restoring && time - startTime > 10000) {
+        pieces.length = 0;
+        document.getElementById('mdt').style.visibility = 'visible';
+        return;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    let startTime = 0;
+
+    document.getElementById('mdt').addEventListener('click', () => {
+      const mdt = document.getElementById('mdt');
+      const rect = mdt.getBoundingClientRect();
+      const tmpCanvas = document.createElement('canvas');
+      tmpCanvas.width = rect.width;
+      tmpCanvas.height = rect.height;
+      const tmpCtx = tmpCanvas.getContext('2d');
+      tmpCtx.font = window.getComputedStyle(mdt).fontSize + ' monospace';
+      tmpCtx.fillStyle = '#0f0';
+      tmpCtx.fillText('mdt.io.vn', 0, rect.height * 0.8);
+
+      createFragments(tmpCanvas, rect.left, rect.top);
+      mdt.style.visibility = 'hidden';
+      restoring = false;
+      startTime = performance.now();
+      animate(startTime);
+
+      setTimeout(() => {
+        restoring = true;
+        startTime = performance.now();
+      }, 5000); // explode 5s, restore 5s
+    });
+
+    window.addEventListener('resize', () => {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
