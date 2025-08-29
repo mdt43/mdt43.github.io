@@ -37,6 +37,20 @@
     .btn{appearance:none;border:1px solid var(--border);background:#111;color:var(--fg);padding:8px 10px;border-radius:999px;font-size:.9rem}
     .btn:active{transform:translateY(1px)}
     a.btn{color:inherit;text-decoration:none}
+    /* PDF viewer (mobile-friendly) */
+.pdf-embed{
+  position: relative;
+  height: min(90vh, 900px); /* chiếm ~90% chiều cao màn hình */
+  background: #000;
+}
+.pdf-embed iframe{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
   </style>
 </head>
 <body>
@@ -129,6 +143,21 @@
     </div>
   </details>
 
+<section id="pdf-mega">
+  <h2 style="margin:12px 0">PDF – MEGA</h2>
+  <div class="pdf-embed">
+    <iframe
+      loading="lazy"
+      allowfullscreen
+      src="https://mega.nz/embed/GwARjJzR#EpjcVS9szOSfloEOMDUkDc-_ob_6NEUQBu5ZPHQ9VeA">
+    </iframe>
+  </div>
+  <p style="margin:10px 0">
+    <a href="https://mega.nz/file/GwARjJzR#EpjcVS9szOSfloEOMDUkDc-_ob_6NEUQBu5ZPHQ9VeA" target="_blank" rel="noopener">
+      Mở trên MEGA
+    </a>
+  </p>
+</section>
 
 
   <div class="wrap" style="opacity:.8;font-size:.85rem;color:var(--muted);padding-bottom:60px">
